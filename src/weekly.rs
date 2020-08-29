@@ -103,7 +103,9 @@ pub async fn weekly(req: HttpRequest) -> impl Responder {
                     .body("could not construct url of an event");
             }
         };
-        cal_event.push(properties::URL::new(url));
+        // Some calendars don't show URLs, so showing the URL as a description
+        cal_event.push(properties::URL::new(url.clone()));
+        cal_event.push(properties::Description::new(url));
 
         calendar.add_event(cal_event);
     }
