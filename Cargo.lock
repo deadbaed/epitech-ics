@@ -551,7 +551,6 @@ dependencies = [
  "ics",
  "log",
  "regex",
- "reqwest",
  "serde_json",
  "uuid",
 ]

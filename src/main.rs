@@ -10,7 +10,7 @@ extern crate log;
 
 async fn root() -> impl Responder {
     HttpResponse::Ok()
-        .content_type("text/html")
+        .content_type("text/html; charset=utf-8")
         .body(include_str!("index.html"))
 }
 
