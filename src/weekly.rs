@@ -57,43 +57,39 @@ pub async fn weekly(req: HttpRequest) -> impl Responder {
         );
 
         // title
-        let title = match event["acti_title"].as_str() {
-            Some(title) => title.to_string(),
+        match event["acti_title"].as_str() {
+            Some(title) => cal_event.push(properties::Summary::new(title)),
             None => {
                 return HttpResponse::InternalServerError().body("could not get title of an event");
             }
-        };
-        cal_event.push(properties::Summary::new(title));
+        }
 
         // start
-        let start = match get_time(&event, "start") {
-            Some(start) => start,
+        match get_time(&event, "start") {
+            Some(start) => cal_event.push(properties::DtStart::new(start)),
             None => {
                 return HttpResponse::InternalServerError()
                     .body("could not get start time of an event");
             }
-        };
-        cal_event.push(properties::DtStart::new(start));
+        }
 
         // end
-        let end = match get_time(&event, "end") {
-            Some(start) => start,
+        match get_time(&event, "end") {
+            Some(end) => cal_event.push(properties::DtEnd::new(end)),
             None => {
                 return HttpResponse::InternalServerError()
                     .body("could not get end time of an event");
             }
-        };
-        cal_event.push(properties::DtEnd::new(end));
+        }
 
         // location
-        let location = match get_location(&event) {
-            Some(location) => location,
+        match get_location(&event) {
+            Some(location) => cal_event.push(properties::Location::new(location)),
             None => {
                 return HttpResponse::InternalServerError()
                     .body("could not get location of an event");
             }
         };
-        cal_event.push(properties::Location::new(location));
 
         // URL to intra
         let url = match construct_intra_url(&event) {
