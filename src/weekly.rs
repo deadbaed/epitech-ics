@@ -28,6 +28,10 @@ pub async fn weekly(req: HttpRequest) -> impl Responder {
     // Create calendar
     let mut calendar = ICalendar::new("2.0", "-//epitech-ics//NONSGML Epitech Calendar//EN");
 
+    // Add calendar name
+    // Note: X-WR-CALNAME is not in the RFC.
+    calendar.push(Property::new("X-WR-CALNAME", "Epitech calendar"));
+
     // Add timezone information
     // X-WR-TIMEZONE can be used to represent timezones, but is not in the RFC.
     // Google Calendar uses X-WR-TIMEZONE, since I use it, it's supported here.
