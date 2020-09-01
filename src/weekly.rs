@@ -2,7 +2,7 @@ use crate::utils::{
     check_autologin, construct_intra_url, get_location, get_registration, get_time,
 };
 use actix_web::{HttpRequest, HttpResponse, Responder};
-use ics::{properties, Event, ICalendar};
+use ics::{components::Property, properties, Event, ICalendar};
 
 pub async fn weekly(req: HttpRequest) -> impl Responder {
     let autologin = match req.match_info().get("autologin") {
@@ -25,7 +25,15 @@ pub async fn weekly(req: HttpRequest) -> impl Responder {
         end_date.format("%Y-%m-%d").to_string()
     );
 
+    // Create calendar
     let mut calendar = ICalendar::new("2.0", "-//epitech-ics//NONSGML Epitech Calendar//EN");
+
+    // Add timezone information
+    // X-WR-TIMEZONE can be used to represent timezones, but is not in the RFC.
+    // Google Calendar uses X-WR-TIMEZONE, since I use it, it's supported here.
+    // Some information: https://blog.jonudell.net/2011/10/17/x-wr-timezone-considered-harmful/
+    // TODO: Add the VTIMEZONE property to have timezones conforming to the RFC
+    calendar.push(Property::new("X-WR-TIMEZONE", "Europe/Paris"));
 
     let raw_json = match epitok::intra::get_array_obj(&url).await {
         Ok(raw_json) => raw_json,
