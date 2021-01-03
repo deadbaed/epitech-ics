@@ -50,17 +50,18 @@ pub async fn weekly(req: HttpRequest) -> impl Responder {
     };
 
     for event in &raw_json {
-        match get_registration(event) {
-            Some(status) => {
-                // if user is not registered, skip to next event
-                if !status {
-                    continue;
-                }
+        // true : user is registered to event
+        // false: user is not registered OR failed not determine registration status
+        let registration_status = {
+            match get_registration(event) {
+                Some(status) => status,
+                None => false,
             }
-            None => {
-                // we don't know if user is registered, so skip to next event
-                continue;
-            }
+        };
+
+        // we are interested only in registered events
+        if !registration_status {
+            continue;
         }
 
         let mut cal_event = Event::new(
