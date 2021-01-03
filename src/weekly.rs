@@ -58,8 +58,8 @@ pub async fn weekly(req: HttpRequest) -> impl Responder {
                 }
             }
             None => {
-                return HttpResponse::InternalServerError()
-                    .body("could not get registration status of an event");
+                // we don't know if user is registered, so skip to next event
+                continue;
             }
         }
 
