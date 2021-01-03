@@ -52,15 +52,9 @@ pub async fn weekly(req: HttpRequest) -> impl Responder {
     for event in &raw_json {
         // true : user is registered to event
         // false: user is not registered OR failed not determine registration status
-        let registration_status = {
-            match get_registration(event) {
-                Some(status) => status,
-                None => false,
-            }
-        };
-
-        // we are interested only in registered events
-        if !registration_status {
+        if !get_registration(event).unwrap_or(false) {
+            // we are interested only in registered events
+            // so skip this one
             continue;
         }
 
