@@ -1015,9 +1015,9 @@ dependencies = [
 
 [[package]]
 name = "ics"
-version = "0.5.5"
+version = "0.5.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9fd80257c65d91b3eb7ef6b5c29af82d738ce0b06e2a864b6a875d04831c5af3"
+checksum = "b891481ef6353e3b97118d4650469e379a39e4373a66908c12f99763182826b1"
 
 [[package]]
 name = "idna"
